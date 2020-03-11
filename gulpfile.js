@@ -125,7 +125,7 @@ gulp.task('appWxml', () => {
         htmlmin({
             collapseWhitespace: true, // 压缩HTML
             removeComments: true, // 清除HTML注释
-            keepClosingSlash: flase // 保持元素末尾的斜杠
+            keepClosingSlash: true // 保持元素末尾的斜杠
         }),
         gulp.dest('./dist')
     ]);
