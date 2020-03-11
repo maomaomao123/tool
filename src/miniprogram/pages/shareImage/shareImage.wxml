@@ -1,4 +1,0 @@
-<button class="intro" bindtap="createShareImage">点我生成分享图</button>
-
-<share-box shareData="{{shareData}}" isCanDraw="{{isCanDraw}}" bind:initData="createShareImage" />
-
