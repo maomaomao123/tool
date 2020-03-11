@@ -2,9 +2,20 @@
   "name": "tool",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs": "vuepress dev docs",
+    "help": "gulp help",
+    "dev": "gulp dev --env alpha",
+    "dev-beta": "gulp dev --env beta",
+    "dev-betav2": "gulp dev --env betav2",
+    "dev-abtest": "gulp dev --env abtest",
+    "dev-release": "gulp dev --env release",
+    "build": "gulp build --env alpha",
+    "build-beta": "gulp build --env beta",
+    "build-abtest": "gulp build --env abtest",
+    "build-release": "gulp build --env release"
   },
   "repository": {
     "type": "git",
@@ -15,5 +26,33 @@
   "bugs": {
     "url": "https://github.com/maomaomao123/tool/issues"
   },
-  "homepage": "https://github.com/maomaomao123/tool#readme"
+  "homepage": "https://github.com/maomaomao123/tool#readme",
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-babel": "^7.0.0",
+    "gulp-base64": "^0.1.3",
+    "gulp-clean": "^0.3.2",
+    "gulp-clean-css": "^3.7.0",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-imagemin": "^3.3.0",
+    "gulp-jsonlint": "^1.2.0",
+    "gulp-jsonminify2": "^1.0.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-stylus": "^2.6.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "path": "^0.12.7",
+    "run-sequence": "^2.1.0",
+    "stream-combiner2": "^1.1.1"
+  },
+  "devDependencies": {
+    "babel-preset-stage-2": "^6.24.1",
+    "gulp-cached": "^1.1.1",
+    "imagemin-pngcrush": "^5.1.0",
+    "pngcrush-bin": "^3.1.0"
+  }
 }
