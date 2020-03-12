@@ -23,7 +23,7 @@
 		"nodeModules": true
 	},
 	"appid": "wxd1f5c865b077279b",
-	"projectname": "tool2",
+	"projectname": "tool",
 	"libVersion": "2.9.4",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},

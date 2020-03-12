@@ -44,6 +44,7 @@ Page({
     })
   },
   chooseImage: function (e) {
+    console.log('888')
     let that = this
     wx.chooseImage({
       count: 9,
