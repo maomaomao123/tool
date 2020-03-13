@@ -1,3 +1,6 @@
+page{
+  background: #efefef;
+}
 .img{
   width: 96rpx;
   height: 96rpx;

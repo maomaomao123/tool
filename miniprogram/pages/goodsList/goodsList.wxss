@@ -1,0 +1,46 @@
+page{
+	background: #efefef;
+}
+.list{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+}
+.item{
+	width: 360rpx;
+	margin: 0 0 10rpx 10rpx;
+	background: #fff;
+	padding-bottom: 20rpx;
+}
+.goods-img{
+	display: block;
+	width: 360rpx;
+	height: 360rpx;
+}
+.goods-name{
+	box-sizing: border-box;
+	width: 100%;
+	height: 60rpx;
+	margin-top: 8rpx;
+	padding: 0 20rpx;
+	line-height: 30rpx;
+	font-size: 30rpx;
+}
+.price{
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-end;
+	margin: 10rpx 0 0 16rpx;
+}
+.godos-price{
+	color: #e60014;
+	font-size: 30rpx;
+	line-height: 1;
+}
+.origin-price{
+	color: #999;
+	font-size: 24rpx;
+	line-height: 1;
+	text-decoration: line-through;
+	margin-left: 10rpx;
+}

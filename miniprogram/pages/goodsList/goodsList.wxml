@@ -1,0 +1,13 @@
+<!--index.wxml-->
+<view class="goodsList-container">
+	<view class="list">
+		<view class="item" wx:for="{{goodsList}}" wx:for-item="item" wx:key="goodsList_index">
+			<image class="goods-img" src="{{item.imgList[0]}}" mode='aspectFill'></image>
+			<view class="goods-name two-text-overflow">{{item.goods_name}}</view>
+			<view class="price">
+				<view class="godos-price">￥{{item.goods_price}}</view>
+				<view class="origin-price">￥{{item.original_price}}</view>
+			</view>
+		</view>
+	</view>
+</view>

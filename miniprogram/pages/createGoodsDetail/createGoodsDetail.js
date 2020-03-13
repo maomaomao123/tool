@@ -44,7 +44,6 @@ Page({
     })
   },
   chooseImage: function (e) {
-    console.log('888')
     let that = this
     wx.chooseImage({
       count: 9,
@@ -90,7 +89,7 @@ Page({
         this.addData()
       })
     }else {
-      showToast('none', '请输入输入项')
+      showToast('none', '请输入内容')
     }
   },
   addData() {
@@ -106,12 +105,15 @@ Page({
         date: Date.parse(new Date()) / 1000, // 时间戳
       },
       success: res => {
-        showToast('success', '新增成功')
         wx.hideLoading()
+        showToast('success', '新增成功')
+        wx.navigateTo({
+          url: `/pages/goodsList/goodsList`
+        })
       },
       fail: err => {
-        showToast('none', '新增失败')
         wx.hideLoading()
+        showToast('none', '新增失败')
       }
     })
   },

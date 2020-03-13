@@ -4,8 +4,7 @@
   <view class="weui-cells weui-cells_after-title">
     <view class="weui-cell">
       <view class="weui-cell__bd">
-        <textarea class="weui-textarea" placeholder="请输入商品名称" style="height: 1.3em"  bindinput="inputGoodsName"  value="{{goods_name}}"/>
-        <view class="weui-textarea-counter">0/60</view>
+        <input class="weui-textarea" placeholder="请输入商品名称" bindinput="inputGoodsName"  value="{{goods_name}}"/>
       </view>
     </view>
   </view>
@@ -13,7 +12,7 @@
   <view class="weui-cells weui-cells_after-title">
     <view class="weui-cell">
       <view class="weui-cell__bd">
-        <input class="weui-input" placeholder="请输入原价"  type="number"  bindinput="inputOriginalPrice" value="{{original_price}}"/>
+        <input class="weui-input" placeholder="请输入原价"  type="digit"  bindinput="inputOriginalPrice" value="{{original_price}}"/>
       </view>
     </view>
   </view>
@@ -21,36 +20,32 @@
   <view class="weui-cells weui-cells_after-title">
     <view class="weui-cell">
       <view class="weui-cell__bd">
-        <input class="weui-input" placeholder="请输入售价" type="number" bindinput="inputGoodsPrice" value="{{goods_price}}" />
+        <input class="weui-input" placeholder="请输入售价" type="digit" bindinput="inputGoodsPrice" value="{{goods_price}}" />
+      </view>
+    </view>
+  </view>
+  <!-- 上次图片 -->
+  <view class="weui-cells__group weui-cells__group_form">
+    <!-- <view class="weui-cells__title">上传图片</view> -->
+    <view class="weui-cells weui-cells_form">
+      <view class="weui-cell weui-cell_active" style="background-color:#fff;padding-left: 16px">
+        <view class="weui-cell__hd">
+          <label class="weui-label">商品图片</label>
+        </view>
+        <view class="weui-cell__bd" wx:if="{{tempImg.length}}">
+          <block wx:for="{{tempImg}}" wx:key="tempImg_index">
+            <image class="img" src='{{item}}' mode='aspectFill'></image>
+          </block>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-uploader__input-box">
+            <view class="weui-uploader__input" bindtap="chooseImage"></view>
+          </view>
+        </view>
       </view>
     </view>
   </view>
   <view class="weui-btn-area">
     <button class="weui-btn" type="primary" bindtap="add">确定</button>
-  </view>
-  <view class="weui-form">
-    <view class="weui-form__control-area">
-      <view class="weui-cells__group weui-cells__group_form">
-        <!-- <view class="weui-cells__title">表单组标题</view> -->
-        <view class="weui-cells weui-cells_form">
-          <view class="weui-cell weui-cell_active">
-            <view class="weui-cell__hd">
-              <label class="weui-label">商品图片</label>
-            </view>
-            <view class="weui-cell__bd"  wx:if="{{tempImg.length}}">
-                <!-- <image class="img" wx:if="{{imgList[0]}}" src="{{imgList[0]}}"></image> -->
-                <block wx:for="{{tempImg}}" wx:key="{{index}}tmpimg">
-                  <image class="img" src='{{item}}' mode='aspectFill'></image>
-                </block>
-            </view>
-            <view class="weui-cell__bd">
-              <view class="weui-uploader__input-box">
-                <view class="weui-uploader__input" bindtap="chooseImage"></view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-    </view> 
   </view>
 </view>

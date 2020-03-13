@@ -3,12 +3,13 @@
 	"cloudfunctionRoot": "cloudfunctions/",
 	"setting": {
 		"urlCheck": false,
-		"es6": false,
+		"es6": true,
 		"enhance": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
 		"coverView": true,
+		"nodeModules": true,
 		"autoAudits": false,
 		"showShadowRootInWxmlPanel": true,
 		"scopeDataCheck": false,
@@ -19,8 +20,7 @@
 			"ignore": [],
 			"disablePlugins": [],
 			"outputPath": ""
-		},
-		"nodeModules": true
+		}
 	},
 	"appid": "wxd1f5c865b077279b",
 	"projectname": "tool",
@@ -75,6 +75,12 @@
 					"name": "createGoodsDetail",
 					"pathName": "pages/createGoodsDetail/createGoodsDetail",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "goodsList",
+					"pathName": "pages/goodsList/goodsList",
 					"scene": null
 				}
 			]

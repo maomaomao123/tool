@@ -7,7 +7,7 @@ const showToast = (type,des) => {
 }
 const showLoading = (title) => {
     wx.showLoading({
-        title: title || 'loading',
+        title: title || '加载中',
     })
 }
 

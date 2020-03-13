@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view class="container">
+<!-- class="container">
 
   <!-- 用户 openid -->
   <view class="userinfo">
@@ -62,5 +62,16 @@
     </navigator>
   </view>
 
+  <!-- 添加商品 -->
+  <view class="uploader">
+    <navigator url="/pages/createGoodsDetail/createGoodsDetail" open-type="navigate" class="uploader-text">
+      <text>添加商品</text>
+    </navigator>
+  </view>
 
-</view>
+  <!-- 添加商品 -->
+  <view class="uploader">
+    <navigator url="/pages/goodsList/goodsList" open-type="navigate" class="uploader-text">
+      <text>商品列表</text>
+    </navigator>
+  </view>
