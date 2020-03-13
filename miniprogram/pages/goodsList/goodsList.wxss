@@ -4,13 +4,16 @@ page{
 .list{
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: flex-start;
+	justify-content: center;
 }
 .item{
 	width: 360rpx;
-	margin: 0 0 10rpx 10rpx;
+	margin-bottom: 10rpx;
 	background: #fff;
 	padding-bottom: 20rpx;
+}
+.item:nth-child(2n){
+	margin-left: 10rpx;
 }
 .goods-img{
 	display: block;

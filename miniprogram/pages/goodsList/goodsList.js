@@ -8,14 +8,14 @@ Page({
     pageSize: 10, //分页返回最大条数，默认10条
     hasMore: false, // 是否有更多
     goodsList: [
-      {
-        goods_name: '轮胎轮胎轮胎轮胎轮胎轮胎轮胎轮',
-        goods_price: '123',
-        original_price: '456',
-        imgList: [
-          'https://image.carisok.com/filesrv/release/uploads/store_0/goods_109/202003121608295872.jpg',
-        ]
-      }
+      // {
+      //   goods_name: '轮胎轮胎轮胎轮胎轮胎轮胎轮胎轮',
+      //   goods_price: '123',
+      //   original_price: '456',
+      //   imgList: [
+      //     'https://image.carisok.com/filesrv/release/uploads/store_0/goods_109/202003121608295872.jpg',
+      //   ]
+      // }
     ]
   },
 
