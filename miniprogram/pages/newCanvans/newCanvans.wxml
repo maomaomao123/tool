@@ -1,0 +1,13 @@
+<!-- <import src="../../../../components/loading/loading.tpl.wxml" /> -->
+<view>
+    <!-- <button>
+        <image src="/assets/images/icon-wechat_3.png"></image>
+        <text>保存图片</text>
+    </button> -->
+    <view style="width:100%;height:100vh;background-color:rgba(0,0,0,.5);">
+        <view style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;margin:0 auto;padding-top:100rpx">
+            <canvas type="2d" id="canvasBox" style="width:100%;height:100%;"></canvas>
+        </view>
+    </view>
+</view>
+<!-- <template is="loading" data="{{ ...loading }}" /> -->

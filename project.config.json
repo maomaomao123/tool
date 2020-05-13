@@ -81,6 +81,14 @@
 					"id": -1,
 					"name": "goodsList",
 					"pathName": "pages/goodsList/goodsList",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 5,
+					"name": "pages/newCanvans/newCanvans",
+					"pathName": "pages/newCanvans/newCanvans",
+					"query": "",
 					"scene": null
 				}
 			]
