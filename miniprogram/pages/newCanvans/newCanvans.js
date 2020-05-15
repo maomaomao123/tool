@@ -21,6 +21,20 @@ let pageA = {
                 goods_img: "https://image.carisok.com/filesrv/beta/uploads/store_0/goods_95/202005061451353748.png",
                 goods_title: "郑凯伟测试商品专用",
                 original_price: "",
+            },
+            {
+                activity_price: "0.01",
+                goods_id: "189373",
+                goods_img: "https://image.carisok.com/filesrv/beta/uploads/store_0/goods_178/202005061436182628.png",
+                goods_title: "郑凯伟测试商品专用",
+                original_price: "",
+            },
+            {
+                activity_price: "0.01",
+                goods_id: "189373",
+                goods_img: "https://image.carisok.com/filesrv/beta/uploads/store_0/goods_95/202005061451353748.png",
+                goods_title: "郑凯伟测试商品专用",
+                original_price: "",
             }
         ],
 
@@ -92,7 +106,6 @@ let pageA = {
                 node: true,                         // 是否返回节点对应的 Node 实例
                 size: true                          // 是否返回节点尺寸（width height）
             }).exec((res) => {                    // 执行针对这个节点的所有请求，exec((res) => {alpiny})  这里是一个回调函数
-                console.log(res,'canvasWidth')
                 const dom = res[0]                            // 因为页面只存在一个画布，所以我们要的dom数据就是 res数组的第一个元素
                 const canvas = dom.node                       // canvas就是我们要操作的画布节点
                 const ctx = canvas.getContext('2d')           // 以2d模式，获取一个画布节点的上下文对象
@@ -118,6 +131,7 @@ let pageA = {
             .then(function () {           // 这里用同步阻塞一下，因为需要先拿到海报的高度计算整体画布的高度
                 // that.drawInfoBg()           // 绘制底部白色背景
                 // that.drawPhoto()            // 绘制头像
+                that.drawGoods()
                 that.drawQrcode()           // 绘制小程序码
                 that.drawText(that.data.store_name, 16, that.data.infoSpace, that.data.canvasHeight - that.data.qrcodeDiam) // 门店名称
                 that.drawText(`地址：${that.data.store_address}`, 10, that.data.infoSpace, that.data.canvasHeight - that.data.infoSpace - 14) // 地址
@@ -134,7 +148,6 @@ let pageA = {
             poster.onload = () => {
                 that.computeCanvasSize(poster.width, poster.height) // 计算画布尺寸
                     .then(function (res) {
-                        console.log(poster, 0, 0, poster.width, poster.height, 0, 0, res.width, res.height)
                         that.data.ctx.drawImage(poster, 0, 0, poster.width, poster.height, 0, 0, res.width, res.height);
                         resolve()
                     })
@@ -143,7 +156,6 @@ let pageA = {
     },
     // 计算画布尺寸
     computeCanvasSize(imgWidth, imgHeight) {
-        console.log(imgWidth, imgHeight,'computeCanvasSize')
         const that = this
         return new Promise(function (resolve, reject) {
             var canvasWidth =  315 || that.data.canvasDom.width                   // 获取画布宽度
@@ -157,6 +169,8 @@ let pageA = {
             }, () => { // 设置成功后再返回
                 that.data.canvas.width = that.data.canvasWidth * that.data.dpr // 设置画布宽
                 that.data.canvas.height = canvasHeight * that.data.dpr         // 设置画布高
+                that.data.scaleNum = that.data.canvas.width / that.data.canvas.height
+                    console.log(that.data.scaleNum,'that.data.scaleNum')
                 that.data.ctx.scale(that.data.dpr, that.data.dpr)              // 根据像素比放大
                 setTimeout(function () {
                     resolve({ "width": canvasWidth, "height": posterHeight })    // 返回成功
@@ -190,7 +204,13 @@ let pageA = {
     },
     // 绘制商品
     drawGoods() {
-
+        this.data.ctx.save();
+        this.data.ctx.fillStyle = "#ffffff"; // 设置商品背景色
+        for (let i = 0; i < 4; i++){
+            this.data.ctx.fillRect((5 + (106 + 5) * i ) * this.data.scaleNum, 180 * this.data.scaleNum, 106 * this.data.scaleNum, 180 * this.data.scaleNum); // 填充
+        }
+        this.data.ctx.scale(this.data.dpr, this.data.dpr)              // 根据像素比放大
+        this.data.ctx.restore();
     },
     // 绘制小程序码
     drawQrcode() {
