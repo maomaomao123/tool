@@ -11,28 +11,28 @@ let pageA = {
                 activity_price: "0.01",
                 goods_id: "189373",
                 goods_img: "https://image.carisok.com/filesrv/beta/uploads/store_0/goods_178/202005061436182628.png",
-                goods_title: "郑凯伟测试商品专用郑凯伟测试商品专用郑凯伟测试商品专用郑凯伟测试商品专用",
+                goods_title: "撒旦法测试商品专用撒旦法测试商品专用撒旦法测试商品专用撒旦法测试商品专用",
                 original_price: "21.00",
             },
             {
                 activity_price: "200.1",
                 goods_id: "189373",
                 goods_img: "https://image.carisok.com/filesrv/beta/uploads/store_0/goods_95/202005061451353748.png",
-                goods_title: "郑凯伟测试商品专用",
+                goods_title: "撒旦法测试商品专用",
                 original_price: "20.11",
             },
             {
                 activity_price: "0.01",
                 goods_id: "189373",
                 goods_img: "https://image.carisok.com/filesrv/beta/uploads/store_0/goods_178/202005061436182628.png",
-                goods_title: "郑凯伟测试商品专用",
+                goods_title: "撒旦法测试商品专用",
                 original_price: "",
             },
             {
                 activity_price: "0.01",
                 goods_id: "189373",
                 goods_img: "https://image.carisok.com/filesrv/beta/uploads/store_0/goods_95/202005061451353748.png",
-                goods_title: "郑凯伟测试商品专用",
+                goods_title: "撒旦法测试商品专用",
                 original_price: "",
             }
         ],
@@ -107,10 +107,10 @@ let pageA = {
     onUnload () {
     },
     onReady() {
-        this.drawImage()
+        this.initDraw()
     },
     // 查询节点信息，并准备绘制图像
-    drawImage() {
+    initDraw() {
         const query = wx.createSelectorQuery()  // 创建一个dom元素节点查询器
         query.select('#canvasBox')              // 选择我们的canvas节点
             .fields({                             // 需要获取的节点相关信息
@@ -152,7 +152,10 @@ let pageA = {
             poster.onload = () => {
                 that.computeCanvasSize(poster.width, poster.height) // 计算画布尺寸
                     .then(function (res) {
+                        that.data.ctx.save();
+                        that.data.ctx.clip()
                         that.data.ctx.drawImage(poster, 0, 0, poster.width, poster.height, 0, 0, res.width, res.height);
+                        that.data.ctx.restore();
                         resolve()
                     })
             }
@@ -192,7 +195,6 @@ let pageA = {
     },
     // 绘制商品
     drawGoods() {
-        this.data.ctx.save();
         let photoGoods = Math.floor((this.data.windowWidth - 60 - 5 * 5 * this.data.scaleNum) / 4) // 宽度
         let basicGoodsY = photoGoods + (180 + 20) * this.data.scaleNum // 商品名称高度
         this.data.ctx.fillStyle = "#ffffff"; // 设置商品背景色
@@ -202,7 +204,9 @@ let pageA = {
             let photo = this.data.canvas.createImage();       // 创建一个图片对象
             photo.src = `${this.data.share_goods[i].goods_img}?x-oss-process=image/resize,w_${photoGoods},h_${photoGoods}`
             photo.onload = () => {
+                this.data.ctx.save();
                 this.data.ctx.drawImage(photo, 0, 0, photoGoods, photoGoods, basicGoodsX, 180 * this.data.scaleNum, photoGoods, photoGoods) // 详见 
+                this.data.ctx.restore();
             }
             // 名称
             this.drawText(this.data.share_goods[i].goods_title, basicGoodsX + 10 * this.data.scaleNum, basicGoodsY, 10 * this.data.scaleNum, 2, photoGoods - 20 * this.data.scaleNum)
@@ -218,7 +222,7 @@ let pageA = {
                 this.data.ctx.stroke();               //进行绘制
             }
         }
-        this.data.ctx.restore();
+        
     },
     // 绘制小程序码
     drawQrcode() {
@@ -239,7 +243,6 @@ let pageA = {
         this.data.ctx.save();
         this.data.ctx.font = `${fontSize}px Arial` || "16px Arial";             // 设置字体大小
         this.data.ctx.fillStyle = color;           // 设置文字颜色
-
         let chr = text.split("")
         let temp = "";
         let row = [];
@@ -278,10 +281,48 @@ let pageA = {
         }
         this.data.ctx.restore();
     },
-    // 文字换行处理
-    
-    textNewline() {
-        
+    // 保存图片
+    save() {
+        let that = this
+        wx.canvasToTempFilePath({
+            fileType: 'jpg',
+            canvas: that.data.canvas, //现在的写法
+            width: that.data.canvas.width,
+            height: that.data.canvas.height,
+            x: 0,
+            y: 0,
+            destWidth: that.data.canvas.width,
+            destHeight: that.data.canvas.height,
+            success: (res) => {
+                console.log(res);
+                //保存图片
+                wx.saveImageToPhotosAlbum({
+                    filePath: res.tempFilePath,
+                    success: function (data) {
+                        wx.showToast({
+                            title: '已保存到相册',
+                            icon: 'success',
+                            duration: 2000
+                        })
+                    },
+                    fail: function (err) {
+                        console.log(err);
+                        if (err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
+                            console.log("当初用户拒绝，再次发起授权")
+                        } else {
+                            util.showToast("请截屏保存分享");
+                        }
+                    },
+                    complete(res) {
+                        wx.hideLoading();
+                        console.log(res);
+                    }
+                })
+            },
+            fail(res) {
+                console.log(res);
+            }
+        })
     }
 }
 Page(pageA)

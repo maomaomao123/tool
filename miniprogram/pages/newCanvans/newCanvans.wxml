@@ -8,6 +8,7 @@
         <view style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;margin:0 auto;padding-top:100rpx">
             <canvas type="2d" id="canvasBox" style="width:100%;height:100%;" disable-scroll="true"></canvas>
         </view>
+        <view style="width: 200rpx;height:200rpx" catchtap="save">保存图片</view>
     </view>
 </view>
 <!-- <template is="loading" data="{{ ...loading }}" /> -->
