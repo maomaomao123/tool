@@ -75,3 +75,8 @@
       <text>商品列表</text>
     </navigator>
   </view>
+  <view class="uploader">
+    <navigator url="/pages/newCanvans/newCanvans" open-type="navigate" class="uploader-text">
+      <text>canvas</text>
+    </navigator>
+  </view>

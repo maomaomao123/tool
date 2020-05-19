@@ -11,7 +11,7 @@ let pageA = {
                 activity_price: "0.01",
                 goods_id: "189373",
                 goods_img: "https://image.carisok.com/filesrv/beta/uploads/store_0/goods_178/202005061436182628.png",
-                goods_title: "郑凯伟测试商品专用郑凯伟测试商品专用",
+                goods_title: "郑凯伟测试商品专用郑凯伟测试商品专用郑凯伟测试商品专用郑凯伟测试商品专用",
                 original_price: "21.00",
             },
             {
@@ -38,9 +38,8 @@ let pageA = {
         ],
 
         // 设置区，针对部件的数据设置
-        photoDiam: 50,                // 头像直径
-        qrcodeDiam: 70,               // 小程序码直径
-        infoSpace: 20,                // 底部信息的间距
+        qrcodeDiam: 80,               // 小程序码直径
+        infoSpace: 30,                // 底部信息的间距
         saveImageWidth: 500,          // 保存的图像宽度
         bottomInfoHeight: 100,        // 底部信息区高度
         store_address: "微信扫码或长按了解更多微信扫码或长按了解更多微信扫码或长按了解更多微信扫码或长按了解更多",   // 提示语
@@ -131,9 +130,6 @@ let pageA = {
                     this.drawing()    // 开始绘图
                 })
             })
-        // 对以上设置不明白的朋友
-        // 可以参考 createSelectorQuery 的api地址
-        // https://developers.weixin.qq.com/miniprogram/dev/api/wxml/wx.createSelectorQuery.html
     },
     // 绘制画面
     drawing() {
@@ -141,12 +137,9 @@ let pageA = {
         wx.showLoading({ title: "生成中" }) // 显示loading
         that.drawPoster()               // 绘制海报
             .then(function () {           // 这里用同步阻塞一下，因为需要先拿到海报的高度计算整体画布的高度
-                // that.drawInfoBg()           // 绘制底部白色背景
                 that.drawGoods()
                 that.drawQrcode()           // 绘制小程序码
-                that.drawText(that.data.store_name, that.data.infoSpace, that.data.canvasHeight - that.data.qrcodeDiam, 16, 2, 260 * that.data.scaleNum) // 门店名称
-                that.drawText(`地址：${that.data.store_address}`, that.data.infoSpace, that.data.canvasHeight - that.data.infoSpace - 14, 10, 1, 260 * that.data.scaleNum) // 地址
-                that.drawText(`联系方式：${that.data.store_phone}`, that.data.infoSpace, that.data.canvasHeight - that.data.infoSpace, 10, 1, 260 * that.data.scaleNum);
+                that.drawStoreInfo() 
                 wx.hideLoading() // 隐藏loading
             })
     },
@@ -186,38 +179,40 @@ let pageA = {
                 }, 1200)
             })
         })
-    },// 绘制白色背景
-    // 注意：这里使用save 和 restore 来模拟图层的概念，防止污染
-    drawInfoBg() {
-        this.data.ctx.save();
-        this.data.ctx.fillStyle = "#ffffff";                                         // 设置画布背景色
-        this.data.ctx.fillRect(0, this.data.canvasHeight - this.data.bottomInfoHeight, this.data.canvasWidth, this.data.bottomInfoHeight); // 填充整个画布
-        this.data.ctx.restore();
     },
-
+    // 门店信息
+    drawStoreInfo() {
+        let that = this
+        let basicX = that.data.infoSpace * that.data.scaleNum
+        // 画布高度 - 小程序码高度 - 底边距 — 微调
+        let basicY = that.data.canvasHeight - (that.data.qrcodeDiam + that.data.infoSpace - 14) * that.data.scaleNum
+        that.drawText(that.data.store_name, basicX, basicY , 16 * that.data.scaleNum, 2, 260 * that.data.scaleNum) // 门店名称
+        that.drawText(`地址：${that.data.store_address}`, basicX, basicY + 40 * that.data.scaleNum, 10 * that.data.scaleNum, 1, 260 * that.data.scaleNum) // 地址
+        that.drawText(`联系方式：${that.data.store_phone}`, basicX, basicY + 54 * that.data.scaleNum, 10 * that.data.scaleNum, 1, 260 * that.data.scaleNum);
+    },
     // 绘制商品
     drawGoods() {
         this.data.ctx.save();
-        // let photoDiam = Math.floor(106 * this.data.scaleNum)
-        let photoDiam = Math.floor((this.data.windowWidth - 60 - 5 * 5 * this.data.scaleNum) / 4)
+        let photoGoods = Math.floor((this.data.windowWidth - 60 - 5 * 5 * this.data.scaleNum) / 4) // 宽度
+        let basicGoodsY = photoGoods + (180 + 20) * this.data.scaleNum // 商品名称高度
         this.data.ctx.fillStyle = "#ffffff"; // 设置商品背景色
-        
         for (let i = 0; i < this.data.share_goods.length; i++){
-            this.data.ctx.fillRect(photoDiam * i + 5 * (i + 1) * this.data.scaleNum, 180 * this.data.scaleNum, photoDiam, 180 * this.data.scaleNum); // 填充
+            let basicGoodsX = photoGoods * i + 5 * (i + 1) * this.data.scaleNum
+            this.data.ctx.fillRect(basicGoodsX, 180 * this.data.scaleNum, photoGoods, 180 * this.data.scaleNum); // 填充
             let photo = this.data.canvas.createImage();       // 创建一个图片对象
-            photo.src = `${this.data.share_goods[i].goods_img}?x-oss-process=image/resize,w_${photoDiam},h_${photoDiam}`
+            photo.src = `${this.data.share_goods[i].goods_img}?x-oss-process=image/resize,w_${photoGoods},h_${photoGoods}`
             photo.onload = () => {
-                this.data.ctx.drawImage(photo, 0, 0, photoDiam, photoDiam, photoDiam * i + 5 * (i + 1) * this.data.scaleNum, 180 * this.data.scaleNum, photoDiam, photoDiam) // 详见 
+                this.data.ctx.drawImage(photo, 0, 0, photoGoods, photoGoods, basicGoodsX, 180 * this.data.scaleNum, photoGoods, photoGoods) // 详见 
             }
             // 名称
-            this.drawText(this.data.share_goods[i].goods_title, photoDiam * i + 5 * (i + 1) * this.data.scaleNum + 10 * this.data.scaleNum, photoDiam + (180 + 20) * this.data.scaleNum, 10, 2, photoDiam - 20 * this.data.scaleNum)
+            this.drawText(this.data.share_goods[i].goods_title, basicGoodsX + 10 * this.data.scaleNum, basicGoodsY, 10 * this.data.scaleNum, 2, photoGoods - 20 * this.data.scaleNum)
             // 售价
-            this.drawText(`￥${this.data.share_goods[i].activity_price}`, photoDiam * i + 5 * (i + 1) * this.data.scaleNum + 10 * this.data.scaleNum, photoDiam + (180 + 20 + 40) * this.data.scaleNum, 10, 1, photoDiam - 20 * this.data.scaleNum, '#E60014')
+            this.drawText(`￥${this.data.share_goods[i].activity_price}`, basicGoodsX + 10 * this.data.scaleNum, basicGoodsY + 40 * this.data.scaleNum, 10 * this.data.scaleNum, 1, photoGoods - 20 * this.data.scaleNum, '#E60014')
             // 原价
             if (this.data.share_goods[i].original_price) {
-                this.drawText(`￥${this.data.share_goods[i].original_price}`, photoDiam * i + 5 * (i + 1) * this.data.scaleNum + 10 * this.data.scaleNum + 50 * this.data.scaleNum, photoDiam + (180 + 20 + 40) * this.data.scaleNum, 8, 1, photoDiam - 20 * this.data.scaleNum, '#999999')
-                this.data.ctx.moveTo(photoDiam * i + 5 * (i + 1) * this.data.scaleNum + 10 * this.data.scaleNum + 50 * this.data.scaleNum, photoDiam + (180 + 20 + 36) * this.data.scaleNum);       //设置起点状态
-                this.data.ctx.lineTo(photoDiam * i + 5 * (i + 1) * this.data.scaleNum + 10 * this.data.scaleNum + 90 * this.data.scaleNum, photoDiam + (180 + 20 + 36) * this.data.scaleNum);       //设置末端状态
+                this.drawText(`￥${this.data.share_goods[i].original_price}`, basicGoodsX + 10 * this.data.scaleNum + 50 * this.data.scaleNum, basicGoodsY + 40 * this.data.scaleNum, 8 * this.data.scaleNum, 1, photoGoods - 20 * this.data.scaleNum, '#999999')
+                this.data.ctx.moveTo(basicGoodsX + 60 * this.data.scaleNum, basicGoodsY + 37 * this.data.scaleNum) //设置起点状态
+                this.data.ctx.lineTo(basicGoodsX + 100 * this.data.scaleNum, basicGoodsY + 37 * this.data.scaleNum) //设置末端状态
                 this.data.ctx.lineWidth = 1;          //设置线宽状态
                 this.data.ctx.strokeStyle = "#999999";  //设置线的颜色状态
                 this.data.ctx.stroke();               //进行绘制
@@ -227,12 +222,13 @@ let pageA = {
     },
     // 绘制小程序码
     drawQrcode() {
-        let diam = this.data.qrcodeDiam                    // 小程序码直径
+        let diam = Math.floor(this.data.qrcodeDiam * this.data.scaleNum)  // 小程序码直径
+        let space = this.data.infoSpace * this.data.scaleNum // 间隔
         let qrcode = this.data.canvas.createImage();       // 创建一个图片对象
-        qrcode.src = this.data.qrcodeUrl                   // 图片对象地址赋值
+        qrcode.src = `${this.data.qrcodeUrl}?x-oss-process=image/resize,w_${diam},h_${diam}` // 图片对象地址赋值
         qrcode.onload = () => {                                        // 半径，alpiny敲碎了键盘
-            let x = this.data.canvasWidth - this.data.infoSpace - diam        // 左上角相对X轴的距离：画布宽 - 间隔 - 直径
-            let y = this.data.canvasHeight - this.data.infoSpace - diam + 5   // 左上角相对Y轴的距离 ：画布高 - 间隔 - 直径 + 微调
+            let x = this.data.canvasWidth - space - diam        // 左上角相对X轴的距离：画布宽 - 间隔 - 直径
+            let y = this.data.canvasHeight - space - diam   // 左上角相对Y轴的距离 ：画布高 - 间隔 - 直径 + 微调
             this.data.ctx.save()
             this.data.ctx.drawImage(qrcode, 0, 0, qrcode.width, qrcode.height, x, y, diam, diam) // 详见 drawImage 用法
             this.data.ctx.restore();
