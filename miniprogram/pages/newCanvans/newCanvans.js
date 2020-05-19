@@ -2,25 +2,24 @@ const app = getApp();
 let pageA = {
     data: {
         // 数据区，从服务端拿到的数据
-        store_name: "微养车同和店微养车同和店微养车同和店微养车同和店",    // 姓名
+        store_name: "这是一段文字用于文本自动换行文本长度自行设置欢迎大家指出缺陷",    // 姓名
         store_phone: "13988887777",  // 电话
-        posterUrl: "https://image.carisok.com/filesrv/beta/uploads/files/20200413/1586760706lzvIeL.jpeg", // 海报地址
-        photoUrl: "https://image.carisok.com/filesrv/beta/uploads/files/20200413/1586760706lzvIeL.jpeg",                         // 头像地址
+        posterUrl: "https://image.carisok.com/filesrv/beta/uploads/files/20200413/1586760706lzvIeL.jpeg", // 海报地址                     // 头像地址
         qrcodeUrl: "https://image.carisok.com/filesrv/beta/uploads/files/20200507/1588841295rWhXYD.png",                  // 小程序二维码
         share_goods: [
             {
                 activity_price: "0.01",
                 goods_id: "189373",
                 goods_img: "https://image.carisok.com/filesrv/beta/uploads/store_0/goods_178/202005061436182628.png",
-                goods_title: "郑凯伟测试商品专用",
-                original_price: "",
+                goods_title: "郑凯伟测试商品专用郑凯伟测试商品专用",
+                original_price: "21.00",
             },
             {
-                activity_price: "0.01",
+                activity_price: "200.1",
                 goods_id: "189373",
                 goods_img: "https://image.carisok.com/filesrv/beta/uploads/store_0/goods_95/202005061451353748.png",
                 goods_title: "郑凯伟测试商品专用",
-                original_price: "",
+                original_price: "20.11",
             },
             {
                 activity_price: "0.01",
@@ -44,7 +43,7 @@ let pageA = {
         infoSpace: 20,                // 底部信息的间距
         saveImageWidth: 500,          // 保存的图像宽度
         bottomInfoHeight: 100,        // 底部信息区高度
-        store_address: "微信扫码或长按了解更多",   // 提示语
+        store_address: "微信扫码或长按了解更多微信扫码或长按了解更多微信扫码或长按了解更多微信扫码或长按了解更多",   // 提示语
 
         // 缓冲区，无需手动设定
         canvasWidth: 0,               // 画布宽
@@ -54,6 +53,10 @@ let pageA = {
         ctx: null,                    // 画布的上下文
         dpr: 1,                       // 设备的像素比
         posterHeight: 0,              // 海报高
+        
+        windowWidth: 0,
+        windowHeight: 0,
+        rpx: null
     },
     _data: {
     },
@@ -66,6 +69,15 @@ let pageA = {
         })
     },
     onLoad(options) {
+        let that = this
+        wx.getSystemInfo({
+            success: function (res) {
+                that.setData({
+                    windowWidth: res.windowWidth,
+                    rpx: res.windowWidth / 375
+                })
+            },
+        })
         // this.getActivityShare().then(res=> {
         //     console.log(res,'res')
         // })
@@ -130,12 +142,11 @@ let pageA = {
         that.drawPoster()               // 绘制海报
             .then(function () {           // 这里用同步阻塞一下，因为需要先拿到海报的高度计算整体画布的高度
                 // that.drawInfoBg()           // 绘制底部白色背景
-                // that.drawPhoto()            // 绘制头像
                 that.drawGoods()
                 that.drawQrcode()           // 绘制小程序码
-                that.drawText(that.data.store_name, 16, that.data.infoSpace, that.data.canvasHeight - that.data.qrcodeDiam) // 门店名称
-                that.drawText(`地址：${that.data.store_address}`, 10, that.data.infoSpace, that.data.canvasHeight - that.data.infoSpace - 14) // 地址
-                that.drawText(`联系方式：${that.data.store_phone}`, 10, that.data.infoSpace, that.data.canvasHeight - that.data.infoSpace);
+                that.drawText(that.data.store_name, that.data.infoSpace, that.data.canvasHeight - that.data.qrcodeDiam, 16, 2, 260 * that.data.scaleNum) // 门店名称
+                that.drawText(`地址：${that.data.store_address}`, that.data.infoSpace, that.data.canvasHeight - that.data.infoSpace - 14, 10, 1, 260 * that.data.scaleNum) // 地址
+                that.drawText(`联系方式：${that.data.store_phone}`, that.data.infoSpace, that.data.canvasHeight - that.data.infoSpace, 10, 1, 260 * that.data.scaleNum);
                 wx.hideLoading() // 隐藏loading
             })
     },
@@ -158,19 +169,17 @@ let pageA = {
     computeCanvasSize(imgWidth, imgHeight) {
         const that = this
         return new Promise(function (resolve, reject) {
-            var canvasWidth =  315 || that.data.canvasDom.width                   // 获取画布宽度
+            var canvasWidth = that.data.windowWidth - 60  // 获取画布宽度
             var posterHeight = canvasWidth * (imgHeight / imgWidth)       // 计算海报高度
-            // var canvasHeight = posterHeight + that.data.bottomInfoHeight  // 计算画布高度 海报高度+底部高度
             var canvasHeight = posterHeight // 计算画布高度 海报高度+底部高度
             that.setData({
                 canvasWidth: canvasWidth,                                   // 设置画布容器宽
                 canvasHeight: canvasHeight,                                 // 设置画布容器高
                 posterHeight: posterHeight                                  // 设置海报高
             }, () => { // 设置成功后再返回
-                that.data.canvas.width = that.data.canvasWidth * that.data.dpr // 设置画布宽
+                that.data.canvas.width = canvasWidth * that.data.dpr // 设置画布宽
                 that.data.canvas.height = canvasHeight * that.data.dpr         // 设置画布高
-                that.data.scaleNum = that.data.canvas.width / that.data.canvas.height
-                    console.log(that.data.scaleNum,'that.data.scaleNum')
+                that.data.scaleNum = that.data.canvas.width / that.data.canvas.height * that.data.rpx
                 that.data.ctx.scale(that.data.dpr, that.data.dpr)              // 根据像素比放大
                 setTimeout(function () {
                     resolve({ "width": canvasWidth, "height": posterHeight })    // 返回成功
@@ -186,30 +195,34 @@ let pageA = {
         this.data.ctx.restore();
     },
 
-    // 绘制头像
-    drawPhoto() {
-        let photoDiam = this.data.photoDiam               // 头像路径
-        let photo = this.data.canvas.createImage();       // 创建一个图片对象
-        photo.src = this.data.photoUrl                    // 图片对象地址赋值
-        photo.onload = () => {
-            let radius = photoDiam / 2                      // 圆形头像的半径
-            let x = this.data.infoSpace                     // 左上角相对X轴的距离
-            let y = this.data.canvasHeight - photoDiam - 35 // 左上角相对Y轴的距离 ：整体高度 - 头像直径 - 微调
-            this.data.ctx.save()
-            this.data.ctx.arc(x + radius, y + radius, radius, 0, 2 * Math.PI) // arc方法画曲线，按照中心点坐标计算，所以要加上半径
-            this.data.ctx.clip()
-            this.data.ctx.drawImage(photo, 0, 0, photo.width, photo.height, x, y, photoDiam, photoDiam) // 详见 drawImage 用法
-            this.data.ctx.restore();
-        }
-    },
     // 绘制商品
     drawGoods() {
         this.data.ctx.save();
+        // let photoDiam = Math.floor(106 * this.data.scaleNum)
+        let photoDiam = Math.floor((this.data.windowWidth - 60 - 5 * 5 * this.data.scaleNum) / 4)
         this.data.ctx.fillStyle = "#ffffff"; // 设置商品背景色
-        for (let i = 0; i < 4; i++){
-            this.data.ctx.fillRect((5 + (106 + 5) * i ) * this.data.scaleNum, 180 * this.data.scaleNum, 106 * this.data.scaleNum, 180 * this.data.scaleNum); // 填充
+        
+        for (let i = 0; i < this.data.share_goods.length; i++){
+            this.data.ctx.fillRect(photoDiam * i + 5 * (i + 1) * this.data.scaleNum, 180 * this.data.scaleNum, photoDiam, 180 * this.data.scaleNum); // 填充
+            let photo = this.data.canvas.createImage();       // 创建一个图片对象
+            photo.src = `${this.data.share_goods[i].goods_img}?x-oss-process=image/resize,w_${photoDiam},h_${photoDiam}`
+            photo.onload = () => {
+                this.data.ctx.drawImage(photo, 0, 0, photoDiam, photoDiam, photoDiam * i + 5 * (i + 1) * this.data.scaleNum, 180 * this.data.scaleNum, photoDiam, photoDiam) // 详见 
+            }
+            // 名称
+            this.drawText(this.data.share_goods[i].goods_title, photoDiam * i + 5 * (i + 1) * this.data.scaleNum + 10 * this.data.scaleNum, photoDiam + (180 + 20) * this.data.scaleNum, 10, 2, photoDiam - 20 * this.data.scaleNum)
+            // 售价
+            this.drawText(`￥${this.data.share_goods[i].activity_price}`, photoDiam * i + 5 * (i + 1) * this.data.scaleNum + 10 * this.data.scaleNum, photoDiam + (180 + 20 + 40) * this.data.scaleNum, 10, 1, photoDiam - 20 * this.data.scaleNum, '#E60014')
+            // 原价
+            if (this.data.share_goods[i].original_price) {
+                this.drawText(`￥${this.data.share_goods[i].original_price}`, photoDiam * i + 5 * (i + 1) * this.data.scaleNum + 10 * this.data.scaleNum + 50 * this.data.scaleNum, photoDiam + (180 + 20 + 40) * this.data.scaleNum, 8, 1, photoDiam - 20 * this.data.scaleNum, '#999999')
+                this.data.ctx.moveTo(photoDiam * i + 5 * (i + 1) * this.data.scaleNum + 10 * this.data.scaleNum + 50 * this.data.scaleNum, photoDiam + (180 + 20 + 36) * this.data.scaleNum);       //设置起点状态
+                this.data.ctx.lineTo(photoDiam * i + 5 * (i + 1) * this.data.scaleNum + 10 * this.data.scaleNum + 90 * this.data.scaleNum, photoDiam + (180 + 20 + 36) * this.data.scaleNum);       //设置末端状态
+                this.data.ctx.lineWidth = 1;          //设置线宽状态
+                this.data.ctx.strokeStyle = "#999999";  //设置线的颜色状态
+                this.data.ctx.stroke();               //进行绘制
+            }
         }
-        this.data.ctx.scale(this.data.dpr, this.data.dpr)              // 根据像素比放大
         this.data.ctx.restore();
     },
     // 绘制小程序码
@@ -226,19 +239,53 @@ let pageA = {
         }
     },
     // 绘制文字 参数 文字text,文字大小fontSize,x,y
-    drawText(text,fontSize,x,y) {
-        // const infoSpace = this.data.infoSpace         // 下面数据间距
-        // const photoDiam = this.data.photoDiam         // 圆形头像的直径
+    drawText(text, x, y, fontSize, maxLine = 1, maxWidth, color = "#3b3b3b") {
         this.data.ctx.save();
         this.data.ctx.font = `${fontSize}px Arial` || "16px Arial";             // 设置字体大小
-        this.data.ctx.fillStyle = "#3b3b3b";           // 设置文字颜色
-        // 姓名（距左：间距 + 头像直径 + 间距）（距下：总高 - 间距 - 文字高 - 头像直径 + 下移一点 ）
-        this.data.ctx.fillText(text, x,y);
-        // 地址（距左：间距 ）（距下：总高 - 间距 ）
-        // this.data.ctx.fillText(`地址：${this.data.store_address}`, infoSpace, this.data.canvasHeight - infoSpace - 14 - 16);
-        // // 电话（距左：间距 + 头像直径 + 间距 - 微调 ）（距下：总高 - 间距 - 文字高 - 上移一点 ）
-        // this.data.ctx.fillText(`联系方式：${this.data.store_phone}`, infoSpace, this.data.canvasHeight - infoSpace);
+        this.data.ctx.fillStyle = color;           // 设置文字颜色
+
+        let chr = text.split("")
+        let temp = "";
+        let row = [];
+        for (var a = 0; a < chr.length; a++) {
+            if (this.data.ctx.measureText(temp).width < maxWidth) {
+                temp += chr[a];
+            }
+            else {
+                a--; //这里添加了a-- 是为了防止字符丢失，效果图中有对比
+                row.push(temp);
+                temp = "";
+            }
+        }
+        row.push(temp);
+        //如果数组长度大于2 则截取前两个
+        if (row.length > maxLine) {
+            var rowCut = row.slice(0, maxLine);
+            var rowPart = rowCut[maxLine - 1];
+            var test = "";
+            var empty = [];
+            for (var a = 0; a < rowPart.length; a++) {
+                if (this.data.ctx.measureText(test).width < maxWidth - 25 * this.data.scaleNum) {
+                    test += rowPart[a];
+                }
+                else {
+                    break;
+                }
+            }
+            empty.push(test);
+            var group = empty[0] + "..."//这里只显示两行，超出的用...表示
+            rowCut.splice(maxLine - 1, 1, group);
+            row = rowCut;
+        }
+        for (var b = 0; b < row.length; b++) {
+            this.data.ctx.fillText(row[b], x, y + b * (fontSize + 2), 300);
+        }
         this.data.ctx.restore();
     },
+    // 文字换行处理
+    
+    textNewline() {
+        
+    }
 }
 Page(pageA)
