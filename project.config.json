@@ -6,6 +6,7 @@
 		"es6": false,
 		"enhance": true,
 		"postcss": true,
+		"preloadBackgroundData": false,
 		"minified": true,
 		"newFeature": true,
 		"coverView": true,
@@ -21,13 +22,13 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
-		"preloadBackgroundData": false,
 		"useCompilerModule": true,
-		"userConfirmedUseCompilerModuleSwitch": false
+		"userConfirmedUseCompilerModuleSwitch": false,
+		"uglifyFileName": true
 	},
 	"appid": "wxd1f5c865b077279b",
 	"projectname": "tool",
-	"libVersion": "2.9.4",
+	"libVersion": "2.11.0",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {
@@ -57,6 +58,13 @@
 					"id": 5,
 					"name": "pages/newCanvans/newCanvans",
 					"pathName": "pages/newCanvans/newCanvans",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 1,
+					"name": "pages/canvasDemo/index",
+					"pathName": "pages/canvasDemo/index",
 					"query": "",
 					"scene": null
 				}

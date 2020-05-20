@@ -1,0 +1,5 @@
+<view class="title">Canvas海报demo 开盖即食</view>
+<view class="canvasWrap">
+    <canvas type="2d" id='posterCanvas' style="width: 320px;height: 410px;"></canvas>
+</view>
+<view class="download" catch:tap="saveImg">保存到相册</view>

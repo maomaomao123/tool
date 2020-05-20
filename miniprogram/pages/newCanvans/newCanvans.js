@@ -51,7 +51,6 @@ let pageA = {
         canvas: null,                  // 画布的节点
         ctx: null,                    // 画布的上下文
         dpr: 1,                       // 设备的像素比
-        posterHeight: 0,              // 海报高
         
         windowWidth: 0,
         windowHeight: 0,
@@ -150,10 +149,10 @@ let pageA = {
             let poster = that.data.canvas.createImage();          // 创建一个图片对象
             poster.src = that.data.posterUrl               // 图片对象地址赋值
             poster.onload = () => {
+                console.log('onload', poster.width, poster.height)
                 that.computeCanvasSize(poster.width, poster.height) // 计算画布尺寸
                     .then(function (res) {
                         that.data.ctx.save();
-                        that.data.ctx.clip()
                         that.data.ctx.drawImage(poster, 0, 0, poster.width, poster.height, 0, 0, res.width, res.height);
                         that.data.ctx.restore();
                         resolve()
@@ -165,21 +164,20 @@ let pageA = {
     computeCanvasSize(imgWidth, imgHeight) {
         const that = this
         return new Promise(function (resolve, reject) {
-            var canvasWidth = that.data.windowWidth - 60  // 获取画布宽度
-            var posterHeight = canvasWidth * (imgHeight / imgWidth)       // 计算海报高度
-            var canvasHeight = posterHeight // 计算画布高度 海报高度+底部高度
+            let canvasWidth = that.data.windowWidth - 60  // 获取画布宽度
+            let canvasHeight = Math.floor(canvasWidth * (imgHeight / imgWidth))       // 计算海报高度
+            console.log('computeCanvasSize', canvasWidth, canvasHeight)
             that.setData({
                 canvasWidth: canvasWidth,                                   // 设置画布容器宽
                 canvasHeight: canvasHeight,                                 // 设置画布容器高
-                posterHeight: posterHeight                                  // 设置海报高
             }, () => { // 设置成功后再返回
                 that.data.canvas.width = canvasWidth * that.data.dpr // 设置画布宽
                 that.data.canvas.height = canvasHeight * that.data.dpr         // 设置画布高
                 that.data.scaleNum = that.data.canvas.width / that.data.canvas.height * that.data.rpx
                 that.data.ctx.scale(that.data.dpr, that.data.dpr)              // 根据像素比放大
                 setTimeout(function () {
-                    resolve({ "width": canvasWidth, "height": posterHeight })    // 返回成功
-                }, 1200)
+                    resolve({ "width": canvasWidth, "height": canvasHeight })    // 返回成功
+                }, 10)
             })
         })
     },
@@ -241,7 +239,7 @@ let pageA = {
     // 绘制文字 参数 文字text,文字大小fontSize,x,y
     drawText(text, x, y, fontSize, maxLine = 1, maxWidth, color = "#3b3b3b") {
         this.data.ctx.save();
-        this.data.ctx.font = `${fontSize}px Arial` || "16px Arial";             // 设置字体大小
+        this.data.ctx.font = `${fontSize}px normal` || "16px normal";             // 设置字体大小
         this.data.ctx.fillStyle = color;           // 设置文字颜色
         let chr = text.split("")
         let temp = "";

@@ -80,3 +80,8 @@
       <text>canvas</text>
     </navigator>
   </view>
+  <view class="uploader">
+    <navigator url="/pages/canvasDemo/index" open-type="navigate" class="uploader-text">
+      <text>canvasDemo</text>
+    </navigator>
+  </view>

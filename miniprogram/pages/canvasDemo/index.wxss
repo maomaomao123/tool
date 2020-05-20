@@ -1,0 +1,25 @@
+
+#posterCanvas {
+    margin: 0 auto;
+    border: 1px solid red;
+}
+.title {
+  text-align: center;
+  font-size: 20px;
+  line-height: 50px;
+}
+.canvasWrap {
+  margin: 20px auto;
+  text-align: center;
+}
+.download {
+    text-align: center;
+    background: #10aeff;
+    color: #fff;
+    font-size: 36rpx;
+    width:320px;
+    height: 90rpx;
+    line-height: 90rpx;
+    border-radius: 5px;
+    margin: 0 auto;
+}
