@@ -16,7 +16,7 @@
     "pages/shareImage/shareImage",
     "pages/createGoodsDetail/createGoodsDetail",
     "pages/goodsList/goodsList",
-    "pages/newCanvans/newCanvans",
+    "pages/newCanvas/newCanvas",
     "pages/canvasDemo/index"
   ],
   "window": {

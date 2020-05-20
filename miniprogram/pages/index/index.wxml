@@ -76,7 +76,7 @@
     </navigator>
   </view>
   <view class="uploader">
-    <navigator url="/pages/newCanvans/newCanvans" open-type="navigate" class="uploader-text">
+    <navigator url="/pages/newCanvas/newCanvas" open-type="navigate" class="uploader-text">
       <text>canvas</text>
     </navigator>
   </view>
